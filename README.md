@@ -6,5 +6,5 @@ Instalador simples em shell script para o miniconda.
 <b>No terminal com sua conta de usuário comum execute:</b>
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/souza-lb/gerenciador-node/main/instalador-miniconda | bash
+wget -qO- https://raw.githubusercontent.com/souza-lb/instalador-miniconda/main/instalador-miniconda | bash
 ```
