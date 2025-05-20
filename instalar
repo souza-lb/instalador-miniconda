@@ -131,7 +131,7 @@ configure_aliases() {
 		alias conda-on="source '$INSTALL_DIR/bin/activate'"
 		alias conda-off="conda deactivate"
 		export PATH="$INSTALL_DIR/bin:\$PATH"
-		$marker
+		# ------------------------------
 		EOF
         echo -e "Aliases adicionados:\n${GREEN}conda-on${NC}, ${GREEN}conda-off${NC}"
     else
