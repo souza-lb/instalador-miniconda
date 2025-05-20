@@ -24,7 +24,7 @@ SCRIPT_NAME=$(basename "$MINICONDA_URL")
 # Mensagem inicial
 echo -e "${GREEN}"
 echo "----------------------------------------------------------"
-echo "           Instalação do Miniconda - Versão 2.0           "
+echo "           Instalação do Miniconda - Versão 4.0           "
 echo "----------------------------------------------------------"
 echo -e "${NC}"
 echo -e "${BLUE}Este script irá:${NC}"
@@ -46,19 +46,30 @@ check_dependencies() {
     if [ ${#missing[@]} -gt 0 ]; then
         echo -e "${RED}Erro: Os seguintes comandos são necessários:${NC}"
         printf '%s\n' "${missing[@]}"
-        exit 1
+        return 1
     fi
 }
 
-# Verifica se o diretório de instalação já existe
+# Verifica e remove instalação existente com confirmação dupla
 check_existing_installation() {
     if [ -d "$INSTALL_DIR" ]; then
         echo -e "${YELLOW}Aviso: O diretório de instalação $INSTALL_DIR já existe.${NC}"
-        read -p "Deseja continuar? (A instalação anterior será sobrescrita) [s/N]: " resposta
+        read -p "Deseja remover a instalação existente e prosseguir com uma nova instalação? [s/N]: " resposta
         if [[ ! "$resposta" =~ ^[Ss]$ ]]; then
-            echo -e "${RED}Instalação cancelada pelo usuário.${NC}"
-            exit 0
+            echo -e "${YELLOW}Instalação cancelada pelo usuário.${NC}"
+            return 0
         fi
+
+        # Confirmação adicional para remoção
+        read -p "Tem certeza que deseja remover permanentemente $INSTALL_DIR? [s/N]: " confirmacao
+        if [[ ! "$confirmacao" =~ ^[Ss]$ ]]; then
+            echo -e "${YELLOW}Remoção cancelada. A instalação existente será mantida.${NC}"
+            return 0
+        fi
+
+        echo -e "${BLUE}Removendo instalação existente...${NC}"
+        rm -rf "$INSTALL_DIR"
+        echo -e "${GREEN}Remoção concluída com sucesso!${NC}\n"
     fi
 }
 
@@ -83,7 +94,7 @@ download_installer() {
         echo -e "${GREEN}Download concluído com sucesso!${NC}"
     else
         echo -e "${RED}Falha no download. Verifique a URL ou sua conexão.${NC}"
-        exit 1
+        return 1
     fi
 }
 
@@ -96,7 +107,7 @@ install_miniconda() {
         echo -e "\n${GREEN}Instalação concluída com sucesso!${NC}"
     else
         echo -e "${RED}Erro durante a instalação. Verifique as permissões ou espaço em disco.${NC}"
-        exit 1
+        return 1
     fi
 }
 
