@@ -141,10 +141,10 @@ configure_aliases() {
 
 # Função principal
 main() {
-    check_dependencies || exit 1
-    check_existing_installation || exit 1  # Adicionada verificação de erro
-    download_installer || exit 1
-    install_miniconda || exit 1
+    check_dependencies || return 1
+    check_existing_installation || return 1  # Adicionada verificação de erro
+    download_installer || return 1
+    install_miniconda || return 1
     configure_aliases
     
     echo -e "\n${GREEN}4/4 Finalizando...${NC}"
