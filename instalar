@@ -142,7 +142,7 @@ configure_aliases() {
 # Função principal
 main() {
     check_dependencies || return 1
-    check_existing_installation || return 1  # Adicionada verificação de erro
+    check_existing_installation || return 1
     download_installer || return 1
     install_miniconda || return 1
     configure_aliases
