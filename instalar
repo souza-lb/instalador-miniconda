@@ -55,18 +55,18 @@ check_existing_installation() {
     if [ -d "$INSTALL_DIR" ]; then
         echo -e "${YELLOW}Aviso: O diretório de instalação $INSTALL_DIR já existe.${NC}"
         
-        # Primeira confirmação (lê diretamente do terminal)
+        # Primeira confirmação
         read -p "Deseja remover a instalação existente e prosseguir com uma nova instalação? [s/N]: " resposta < /dev/tty
         if [[ ! "$resposta" =~ ^[Ss]$ ]]; then
             echo -e "${YELLOW}Instalação cancelada pelo usuário.${NC}"
-            return 0
+            return 1  # Alterado para retornar código de erro
         fi
 
-        # Confirmação adicional para remoção
+        # Confirmação adicional
         read -p "TEM CERTEZA ABSOLUTA que deseja remover permanentemente $INSTALL_DIR? [s/N]: " confirmacao < /dev/tty
         if [[ ! "$confirmacao" =~ ^[Ss]$ ]]; then
             echo -e "${YELLOW}Remoção cancelada. A instalação existente será mantida.${NC}"
-            return 0
+            return 1  # Alterado para retornar código de erro
         fi
 
         echo -e "${BLUE}Removendo instalação existente...${NC}"
@@ -141,10 +141,10 @@ configure_aliases() {
 
 # Função principal
 main() {
-    check_dependencies
-    check_existing_installation
-    download_installer
-    install_miniconda
+    check_dependencies || exit 1
+    check_existing_installation || exit 1  # Adicionada verificação de erro
+    download_installer || exit 1
+    install_miniconda || exit 1
     configure_aliases
     
     echo -e "\n${GREEN}4/4 Finalizando...${NC}"
