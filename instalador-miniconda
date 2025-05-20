@@ -24,7 +24,7 @@ SCRIPT_NAME=$(basename "$MINICONDA_URL")
 # Mensagem inicial
 echo -e "${GREEN}"
 echo "----------------------------------------------------------"
-echo "           Instalação do Miniconda - Versão 4.0           "
+echo "           Instalação do Miniconda - Versão 2.0           "
 echo "----------------------------------------------------------"
 echo -e "${NC}"
 echo -e "${BLUE}Este script irá:${NC}"
